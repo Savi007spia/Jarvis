@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="UTF-8">
+<title>J.A.R.V.I.S. — Codice: il  aprire la porta con arduino lo devi fare in c + + non py...</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050a14;color:#00d2ff;font-family:'Courier New',monospace;padding:20px}
+.header{border-bottom:1px solid #00d2ff;padding-bottom:12px;margin-bottom:16px;
+         display:flex;justify-content:space-between;align-items:center}
+h2{margin:0;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 8px #00d2ff}
+.meta{font-size:.7em;color:#00ffcc;letter-spacing:1px}
+.toolbar{margin-bottom:10px;display:flex;gap:8px}
+button{background:rgba(0,210,255,.1);border:1px solid #00d2ff;color:#00d2ff;
+        padding:7px 16px;border-radius:6px;font-family:'Courier New',monospace;
+        font-size:.8em;cursor:pointer;letter-spacing:1px}
+button:hover{background:rgba(0,210,255,.25)}
+button.verde{border-color:#00ffcc;color:#00ffcc;background:rgba(0,255,204,.1)}
+pre{margin:0;border-radius:8px;border:1px solid rgba(0,210,255,.2);
+     max-height:75vh;overflow:auto}
+.filepath{font-size:.72em;color:rgba(0,210,255,.5);margin-top:10px;word-break:break-all}
+</style></head><body>
+<div class="header">
+  <h2>&#9670; il  aprire la porta con arduino lo devi fare in c + + non py...</h2>
+  <div class="meta">JARVIS CODE ENGINE &nbsp;|&nbsp; PYTHON</div>
+</div>
+<div class="toolbar">
+  <button onclick="copiaAll()">&#128203; Copia tutto</button>
+  <button class="verde" onclick="apriFile()">&#128194; Apri file</button>
+</div>
+<pre><code class="language-python">// Sketch Arduino per aprire una porta tramite relè
+// Compilare e caricare su Arduino (es. Uno, Mega, Nano)
+
+#include &lt;Arduino.h&gt;
+
+// Pin digitale collegato al relè (NC/NO)
+const uint8_t PIN_RELE = 8;
+
+// Stato della porta: false = chiusa, true = aperta
+bool portaAperta = false;
+
+// Funzione per aprire la porta
+void apriPorta() {
+    // Attiva il relè (assumendo logica HIGH attiva)
+    digitalWrite(PIN_RELE, HIGH);
+    portaAperta = true;
+}
+
+// Funzione per chiudere la porta
+void chiudiPorta() {
+    digitalWrite(PIN_RELE, LOW);
+    portaAperta = false;
+}
+
+// Inizializzazione
+void setup() {
+    // Configura il pin del relè come uscita
+    pinMode(PIN_RELE, OUTPUT);
+    // Assicura che il relè sia spento all'avvio
+    digitalWrite(PIN_RELE, LOW);
+    // Avvia la comunicazione seriale per comandi di debug
+    Serial.begin(9600);
+    while (!Serial) { ; } // Attende apertura della console (solo su board con USB)
+    Serial.println(F(&quot;Sistema di controllo porta pronto.&quot;));
+}
+
+// Loop principale
+void loop() {
+    // Controlla se sono arrivati comandi dalla seriale
+    if (Serial.available() &gt; 0) {
+        String comando = Serial.readStringUntil('\n');
+        comando.trim(); // Rimuove spazi bianchi
+
+        if (comando.equalsIgnoreCase(&quot;APRI&quot;)) {
+            if (!portaAperta) {
+                apriPorta();
+                Serial.println(F(&quot;Porta aperta.&quot;));
+            } else {
+                Serial.println(F(&quot;Porta già aperta.&quot;));
+            }
+        } else if (comando.equalsIgnoreCase(&quot;CHIUDI&quot;)) {
+            if (portaAperta) {
+                chiudiPorta();
+                Serial.println(F(&quot;Porta chiusa.&quot;));
+            } else {
+                Serial.println(F(&quot;Porta già chiusa.&quot;));
+            }
+        } else {
+            Serial.println(F(&quot;Comando non riconosciuto. Usa APri o CHIUDI.&quot;));
+        }
+    }
+
+    // Eventuale logica aggiuntiva (es. timeout automatico)
+    // Esempio: chiude la porta dopo 10 secondi se rimane aperta
+    static unsigned long tempoApertura = 0;
+    if (portaAperta &amp;&amp; (millis() - tempoApertura &gt;= 10000)) {
+        chiudiPorta();
+        Serial.println(F(&quot;Porta chiusa automaticamente dopo timeout.&quot;));
+    }
+    if (portaAperta &amp;&amp; tempoApertura == 0) {
+        tempoApertura = millis(); // registra il momento di apertura
+    }
+    if (!portaAperta) {
+        tempoApertura = 0; // resetta il timer
+    }
+}</code></pre>
+<div class="filepath">File salvato: C:\Users\utente\Desktop\JARVIS\jarvis_codice_1787829456.py</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script>
+function copiaAll() {
+  navigator.clipboard.writeText("// Sketch Arduino per aprire una porta tramite rel\u00e8\n// Compilare e caricare su Arduino (es. Uno, Mega, Nano)\n\n#include <Arduino.h>\n\n// Pin digitale collegato al rel\u00e8 (NC/NO)\nconst uint8_t PIN_RELE = 8;\n\n// Stato della porta: false = chiusa, true = aperta\nbool portaAperta = false;\n\n// Funzione per aprire la porta\nvoid apriPorta() {\n    // Attiva il rel\u00e8 (assumendo logica HIGH attiva)\n    digitalWrite(PIN_RELE, HIGH);\n    portaAperta = true;\n}\n\n// Funzione per chiudere la porta\nvoid chiudiPorta() {\n    digitalWrite(PIN_RELE, LOW);\n    portaAperta = false;\n}\n\n// Inizializzazione\nvoid setup() {\n    // Configura il pin del rel\u00e8 come uscita\n    pinMode(PIN_RELE, OUTPUT);\n    // Assicura che il rel\u00e8 sia spento all'avvio\n    digitalWrite(PIN_RELE, LOW);\n    // Avvia la comunicazione seriale per comandi di debug\n    Serial.begin(9600);\n    while (!Serial) { ; } // Attende apertura della console (solo su board con USB)\n    Serial.println(F(\"Sistema di controllo porta pronto.\"));\n}\n\n// Loop principale\nvoid loop() {\n    // Controlla se sono arrivati comandi dalla seriale\n    if (Serial.available() > 0) {\n        String comando = Serial.readStringUntil('\\n');\n        comando.trim(); // Rimuove spazi bianchi\n\n        if (comando.equalsIgnoreCase(\"APRI\")) {\n            if (!portaAperta) {\n                apriPorta();\n                Serial.println(F(\"Porta aperta.\"));\n            } else {\n                Serial.println(F(\"Porta gi\u00e0 aperta.\"));\n            }\n        } else if (comando.equalsIgnoreCase(\"CHIUDI\")) {\n            if (portaAperta) {\n                chiudiPorta();\n                Serial.println(F(\"Porta chiusa.\"));\n            } else {\n                Serial.println(F(\"Porta gi\u00e0 chiusa.\"));\n            }\n        } else {\n            Serial.println(F(\"Comando non riconosciuto. Usa APri o CHIUDI.\"));\n        }\n    }\n\n    // Eventuale logica aggiuntiva (es. timeout automatico)\n    // Esempio: chiude la porta dopo 10 secondi se rimane aperta\n    static unsigned long tempoApertura = 0;\n    if (portaAperta && (millis() - tempoApertura >= 10000)) {\n        chiudiPorta();\n        Serial.println(F(\"Porta chiusa automaticamente dopo timeout.\"));\n    }\n    if (portaAperta && tempoApertura == 0) {\n        tempoApertura = millis(); // registra il momento di apertura\n    }\n    if (!portaAperta) {\n        tempoApertura = 0; // resetta il timer\n    }\n}").then(
+    () => { const b=document.querySelector('button'); b.textContent='✔ Copiato!';
+             setTimeout(()=>b.textContent='⎘ Copia tutto',2000); });
+}
+function apriFile() {
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent("// Sketch Arduino per aprire una porta tramite rel\u00e8\n// Compilare e caricare su Arduino (es. Uno, Mega, Nano)\n\n#include <Arduino.h>\n\n// Pin digitale collegato al rel\u00e8 (NC/NO)\nconst uint8_t PIN_RELE = 8;\n\n// Stato della porta: false = chiusa, true = aperta\nbool portaAperta = false;\n\n// Funzione per aprire la porta\nvoid apriPorta() {\n    // Attiva il rel\u00e8 (assumendo logica HIGH attiva)\n    digitalWrite(PIN_RELE, HIGH);\n    portaAperta = true;\n}\n\n// Funzione per chiudere la porta\nvoid chiudiPorta() {\n    digitalWrite(PIN_RELE, LOW);\n    portaAperta = false;\n}\n\n// Inizializzazione\nvoid setup() {\n    // Configura il pin del rel\u00e8 come uscita\n    pinMode(PIN_RELE, OUTPUT);\n    // Assicura che il rel\u00e8 sia spento all'avvio\n    digitalWrite(PIN_RELE, LOW);\n    // Avvia la comunicazione seriale per comandi di debug\n    Serial.begin(9600);\n    while (!Serial) { ; } // Attende apertura della console (solo su board con USB)\n    Serial.println(F(\"Sistema di controllo porta pronto.\"));\n}\n\n// Loop principale\nvoid loop() {\n    // Controlla se sono arrivati comandi dalla seriale\n    if (Serial.available() > 0) {\n        String comando = Serial.readStringUntil('\\n');\n        comando.trim(); // Rimuove spazi bianchi\n\n        if (comando.equalsIgnoreCase(\"APRI\")) {\n            if (!portaAperta) {\n                apriPorta();\n                Serial.println(F(\"Porta aperta.\"));\n            } else {\n                Serial.println(F(\"Porta gi\u00e0 aperta.\"));\n            }\n        } else if (comando.equalsIgnoreCase(\"CHIUDI\")) {\n            if (portaAperta) {\n                chiudiPorta();\n                Serial.println(F(\"Porta chiusa.\"));\n            } else {\n                Serial.println(F(\"Porta gi\u00e0 chiusa.\"));\n            }\n        } else {\n            Serial.println(F(\"Comando non riconosciuto. Usa APri o CHIUDI.\"));\n        }\n    }\n\n    // Eventuale logica aggiuntiva (es. timeout automatico)\n    // Esempio: chiude la porta dopo 10 secondi se rimane aperta\n    static unsigned long tempoApertura = 0;\n    if (portaAperta && (millis() - tempoApertura >= 10000)) {\n        chiudiPorta();\n        Serial.println(F(\"Porta chiusa automaticamente dopo timeout.\"));\n    }\n    if (portaAperta && tempoApertura == 0) {\n        tempoApertura = millis(); // registra il momento di apertura\n    }\n    if (!portaAperta) {\n        tempoApertura = 0; // resetta il timer\n    }\n}");
+  a.download="jarvis_codice_1787829456.py";
+  a.click();
+}
+</script></body></html>
